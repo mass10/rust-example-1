@@ -1,22 +1,18 @@
-# rust-example-1 (2018-05-07)
-
-Visual Studio Code でプロジェクトを作成するときの形とは
-
 # Installing Rust on Windows 10. (2018-05-07)
 
-* 本体をインストール
+* 本体をインストールする
 
 rustup-init.exe 実行する。
 
-* ソースコードをセットアップ
+* コマンドプロンプトを開いてソースコードをセットアップする
 
 ```
 rustup component add rust-src
 ```
 
-# Visual Studio Code にプラグインをインストール
+# Visual Studio Code のセットアップ
 
-左側の「拡張機能」から、「Rust language support」をインストール。
+* 左側の「拡張機能」から、「Rust language support」をインストール。
+* nightly toolchain が入っていないと言われたので入れた。
 
-# nightly **** も入れた
 
