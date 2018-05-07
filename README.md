@@ -17,3 +17,6 @@ rustup component add rust-src
 # Visual Studio Code にプラグインをインストール
 
 左側の「拡張機能」から、「Rust language support」をインストール。
+
+# nightly **** も入れた
+
