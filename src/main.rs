@@ -97,14 +97,18 @@ impl Application {
 	}
 
 	fn run(&self) {
+
 		self.configure();
+
 		let path = Path::new("data/mail.tsv");
+
 		let result = std::fs::File::open(path);
 		if result.is_err() {
 			let error = result.err().unwrap();
 			println!("{}", error);
 			return;
 		}
+
 		let f = result.unwrap();
 		let mut service = Service { _connection: None };
 		service.init();
