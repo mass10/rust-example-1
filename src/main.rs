@@ -14,6 +14,7 @@ struct Service {
 impl Service {
 
 	fn init(&mut self) {
+
 		let connection = self.open();
 		let sql = r"
 		CREATE TABLE USERS(MAIL NVARCHAR(999) NOT NULL, NAME NVARCHAR(999) NOT NULL)
@@ -28,6 +29,7 @@ impl Service {
 	}
 
 	fn register(&mut self, mail: String, name: String) {
+
 		let connection = self.open();
 		let sql = r"
 		INSERT INTO USERS(MAIL, NAME) VALUES(?, ?)
@@ -44,7 +46,8 @@ impl Service {
 		statement.next().unwrap();
 	}
 
-	fn open(&mut self) -> &sqlite::Connection {	
+	fn open(&mut self) -> &sqlite::Connection {
+
 		if self._connection.is_some() {
 			return self._connection.as_mut().unwrap();
 		}
@@ -54,6 +57,7 @@ impl Service {
 	}
 
 	fn dump(&mut self) {
+
 		let connection = self.open();
 		let sql = "SELECT MAIL, NAME FROM USERS";
 		let result = connection.prepare(sql);
@@ -79,6 +83,7 @@ impl Application {
 
 	fn configure(&self) {
 
+		// ===== OPEN =====
 		let path = Path::new("conf/settings.yaml");
 
 		let result = std::fs::File::open(path);
@@ -88,6 +93,7 @@ impl Application {
 			return;
 		}
 
+		// ===== CONFIGURE =====
 		let mut f = result.unwrap();
 		let mut buf = String::new();
 		f.read_to_string(&mut buf).unwrap();
@@ -98,8 +104,10 @@ impl Application {
 
 	fn run(&self) {
 
+		// ===== CONFIGURATION =====
 		self.configure();
 
+		// ===== READING DATA FILE & REGISTRATION =====
 		let path = Path::new("data/mail.tsv");
 
 		let result = std::fs::File::open(path);
@@ -130,6 +138,8 @@ impl Application {
 			let name = fields.next().unwrap_or("");
 			service.register(String::from(mail), String::from(name));
 		}
+
+		// ===== SUMMARY =====
 		service.dump();
 	}
 }
