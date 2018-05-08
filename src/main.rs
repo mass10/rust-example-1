@@ -44,7 +44,7 @@ impl Service {
 		statement.next().unwrap();
 	}
 
-	fn open(&mut self) -> &mut sqlite::Connection {	
+	fn open(&mut self) -> &sqlite::Connection {	
 		if self._connection.is_some() {
 			return self._connection.as_mut().unwrap();
 		}
