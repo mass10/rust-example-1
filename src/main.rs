@@ -1,8 +1,9 @@
 extern crate sqlite;
+extern crate yaml_rust;
 
 use std::path::Path;
 use std::io::Read;
-// use std::io::BufRead;
+use yaml_rust::yaml::YamlLoader;
 
 
 struct Service {
@@ -14,7 +15,10 @@ impl Service {
 
 	fn init(&mut self) {
 		let connection = self.open();
-		let result = connection.execute("CREATE TABLE USERS(MAIL NVARCHAR(999) NOT NULL, NAME NVARCHAR(999) NOT NULL)");
+		let sql = r"
+		CREATE TABLE USERS(MAIL NVARCHAR(999) NOT NULL, NAME NVARCHAR(999) NOT NULL)
+		";
+		let result = connection.execute(sql);
 		if result.is_err() {
 			let error = result.err().unwrap();
 			println!("[ERROR] can't insert record. reason: {}", error);
@@ -25,7 +29,10 @@ impl Service {
 
 	fn register(&mut self, mail: String, name: String) {
 		let connection = self.open();
-		let result = connection.prepare("INSERT INTO USERS(MAIL, NAME) VALUES(?, ?)");
+		let sql = r"
+		INSERT INTO USERS(MAIL, NAME) VALUES(?, ?)
+		";
+		let result = connection.prepare(sql);
 		if result.is_err() {
 			let error = result.err().unwrap();
 			println!("[ERROR] can't insert record. reason: {}", error);
@@ -48,7 +55,8 @@ impl Service {
 
 	fn dump(&mut self) {
 		let connection = self.open();
-		let result = connection.prepare("SELECT MAIL, NAME FROM USERS");
+		let sql = "SELECT MAIL, NAME FROM USERS";
+		let result = connection.prepare(sql);
 		if result.is_err() {
 			let error = result.err().unwrap();
 			println!("[ERROR] reason: {}", error);
@@ -70,17 +78,22 @@ struct Application {
 impl Application {
 
 	fn configure(&self) {
-		let path = Path::new("data/mail.tsv");
+
+		let path = Path::new("conf/settings.yaml");
+
+		let result = std::fs::File::open(path);
+		if result.is_err() {
+			let error = result.err().unwrap();
+			println!("{}", error);
+			return;
+		}
+
+		let mut f = result.unwrap();
 		let mut buf = String::new();
-		match std::fs::File::open(path) {
-			Err(info) => {
-				println!("{}", info);
-			},
-			Ok(mut f) => {
-				f.read_to_string(&mut buf).unwrap();
-			}
-		};
-		println!("{}", buf);
+		f.read_to_string(&mut buf).unwrap();
+		let docs = YamlLoader::load_from_str(buf.as_str()).unwrap();
+		let doc = &docs[0];
+		println!("{:?}", doc);
 	}
 
 	fn run(&self) {

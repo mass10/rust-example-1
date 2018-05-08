@@ -5,3 +5,4 @@ authors = ["mass10 <mass10.github@gmail.com>"]
 
 [dependencies]
 sqlite = "*"
+yaml-rust = "*"
