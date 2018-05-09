@@ -1,9 +1,7 @@
-extern crate yaml_rust;
-
 use std;
 use std::io::BufRead;
-use std::io::Read;
 use service;
+use configuration;
 
 pub struct Application {
 
@@ -11,31 +9,19 @@ pub struct Application {
 
 impl Application {
 
-	pub fn configure(&self) {
-
-		// ===== OPEN =====
-		let path = std::path::Path::new("conf/settings.yaml");
-
-		let result = std::fs::File::open(path);
-		if result.is_err() {
-			let error = result.err().unwrap();
-			println!("{}", error);
-			return;
-		}
-
-		// ===== CONFIGURE =====
-		let mut f = result.unwrap();
-		let mut buf = String::new();
-		f.read_to_string(&mut buf).unwrap();
-		let docs = yaml_rust::yaml::YamlLoader::load_from_str(buf.as_str()).unwrap();
-		let doc = &docs[0];
-		println!("{:?}", doc);
+	pub fn new() -> Application {
+		let app = Application {};
+		return app;
 	}
 
 	pub fn run(&self) {
 
 		// ===== CONFIGURATION =====
-		self.configure();
+		let conf = configuration::ConfigurationSettings::new();
+		if conf.is_none() {
+			println!("[FATAL] Configuration error! Cannot start application.");
+			return;
+		}
 
 		// ===== READING DATA FILE & REGISTRATION =====
 		let path = std::path::Path::new("data/mail.tsv");
