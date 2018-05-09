@@ -1,6 +1,4 @@
-extern crate sqlite;
-extern crate yaml_rust;
-
+// ★全部ここに書かなきゃダメ
 mod application;
 mod service;
 

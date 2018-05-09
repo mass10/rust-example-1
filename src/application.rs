@@ -1,7 +1,8 @@
+extern crate yaml_rust;
+
 use std;
 use std::io::BufRead;
 use std::io::Read;
-use yaml_rust::yaml::YamlLoader;
 use service;
 
 pub struct Application {
@@ -26,7 +27,7 @@ impl Application {
 		let mut f = result.unwrap();
 		let mut buf = String::new();
 		f.read_to_string(&mut buf).unwrap();
-		let docs = YamlLoader::load_from_str(buf.as_str()).unwrap();
+		let docs = yaml_rust::yaml::YamlLoader::load_from_str(buf.as_str()).unwrap();
 		let doc = &docs[0];
 		println!("{:?}", doc);
 	}

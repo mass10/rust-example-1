@@ -1,7 +1,4 @@
-// use std::path::Path;
-// use std::io::Read;
-// use yaml_rust::yaml::YamlLoader;
-use sqlite;
+extern crate sqlite;
 
 pub struct Service {
 
