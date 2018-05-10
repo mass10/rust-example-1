@@ -69,6 +69,7 @@ impl Service {
 	}
 
 	pub fn new() -> Service {
+
 		let s = Service { _connection: None };
 		return s;
 	}
