@@ -23,13 +23,16 @@ impl Application {
 			return;
 		}
 
+		let conf = conf.unwrap();
+		println!("[TRACE] get_yaml() returned {:?}.", conf.get_yaml());
+
 		// ===== READING DATA FILE & REGISTRATION =====
 		let path = std::path::Path::new("data/mail.tsv");
 
 		let result = std::fs::File::open(path);
 		if result.is_err() {
 			let error = result.err().unwrap();
-			println!("{}", error);
+			println!("[ERROR] {}", error);
 			return;
 		}
 
