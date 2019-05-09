@@ -41,7 +41,7 @@ impl Application {
 		service.init();
 		let r = std::io::BufReader::new(f);
 		for e in r.lines() {
-			let mut line = e.unwrap();
+			let line = e.unwrap();
 			if line == "" {
 				continue;
 			}
